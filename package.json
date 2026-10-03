@@ -1,0 +1,17 @@
+{
+  "name": "creatine-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp creatine reminder bot with photo verification and streak tracking",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --env-file=.env server.js"
+  },
+  "engines": {
+    "node": ">=20.6"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
