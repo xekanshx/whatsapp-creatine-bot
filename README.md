@@ -1,15 +1,15 @@
 # Creatine Bot
 
-A WhatsApp bot that nags you every hour (12:00–23:59) until you prove you took your creatine by sending a **photo of the tub**. Claude Haiku 4.5 checks the photo, and the bot tracks your streak in Upstash Redis.
+A WhatsApp bot that nags you every hour (12:00–23:59) until you prove you took your creatine by sending a **photo of the tub**. Gemini 2.0 Flash checks the photo, and the bot tracks your streak in Upstash Redis.
 
-Only dependency: `express`. Everything else (WhatsApp, Upstash, Anthropic) is plain `fetch`.
+Only dependency: `express`. Everything else (WhatsApp, Upstash, Gemini) is plain `fetch`.
 
 ## How it works
 
 | Step | What happens |
 | --- | --- |
 | Hourly | cron-job.org calls `GET /send-checkin?secret=…`. If you haven't confirmed today, the bot texts you with your streak. If you have, it sends nothing. |
-| You reply with a photo | The bot downloads it from Meta, sends it to `claude-haiku-4-5`, and expects `YES` or `NO`. |
+| You reply with a photo | The bot downloads it from Meta, sends it to `gemini-2.0-flash`, and expects `YES` or `NO`. |
 | `YES` | Today is confirmed, streak +1 (once per day), nagging stops until tomorrow. |
 | `NO` | Bot asks for a real photo; hourly nagging continues. |
 | You reply with text | Bot reminds you a photo is required. |
@@ -53,9 +53,12 @@ Notes on behavior:
 
 The bot stores a single key, `creatine:state`, with `{ streak, lastConfirmedDate, lastAskedDate }`. No setup needed; it's created on first write.
 
-## 3. Get an Anthropic API key
+## 3. Get a Gemini API key
 
-Create one at <https://console.anthropic.com/settings/keys> → `ANTHROPIC_API_KEY`. Each photo check costs a fraction of a cent.
+1. Go to <https://aistudio.google.com/app/apikey> and sign in with a Google account — no billing setup needed.
+2. **Create API key** → copy it → `GEMINI_API_KEY`.
+
+The free tier of `gemini-2.0-flash` comfortably covers one photo check per day.
 
 ## 4. Run locally (optional)
 
@@ -86,7 +89,7 @@ To receive Meta's webhook locally you'd need a tunnel (ngrok, cloudflared). Simp
    | `UPSTASH_REDIS_REST_URL` | from Upstash |
    | `UPSTASH_REDIS_REST_TOKEN` | from Upstash |
    | `CRON_SECRET` | your random string |
-   | `ANTHROPIC_API_KEY` | from Anthropic |
+   | `GEMINI_API_KEY` | from Google AI Studio |
    | `TIMEZONE` | e.g. `Asia/Kolkata` (optional, defaults to UTC) |
 
    `PORT` is set by Render automatically; don't add it.

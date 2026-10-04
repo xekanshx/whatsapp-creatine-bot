@@ -13,7 +13,7 @@ const REQUIRED_ENV = [
   'UPSTASH_REDIS_REST_URL',
   'UPSTASH_REDIS_REST_TOKEN',
   'CRON_SECRET',
-  'ANTHROPIC_API_KEY',
+  'GEMINI_API_KEY',
 ];
 const missing = REQUIRED_ENV.filter((k) => !process.env[k]);
 if (missing.length) {
